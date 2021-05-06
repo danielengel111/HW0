@@ -1,3 +1,4 @@
+import java.io.Console;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -11,9 +12,23 @@ public class Main {
      * @param grade The grade
      */
     public static void gradeMessage(int grade) {
-        /*
-        TODO: Your code for part A is here...
-         */
+        switch(grade / 10)
+        {
+            case (10):
+                System.out.println("Excellent");
+                break;
+            case (9):
+                System.out.println("Great");
+                break;
+            case (8):
+                System.out.println("Very Good");
+                break;
+            case (7):
+                System.out.println("Good");
+                break;
+            default:
+                System.out.println("OK");
+        }
     }
 
     /**
@@ -30,11 +45,18 @@ public class Main {
     public static String compressString(String stringToCompress) {
         String compressedString = "";
 
-        /*
-        TODO: Your code for part B1 is here...
-        Note: you may change the given code, but you must not change the signature of the method.
-         */
-
+        int count = 0;
+        for(int i = 0; i < stringToCompress.length(); i++)
+        {
+            count += 1;
+            if(i + 1 == stringToCompress.length() || stringToCompress.charAt(i) != stringToCompress.charAt(i + 1))
+            {
+                compressedString += stringToCompress.charAt(i);
+                compressedString += count;
+                count = 0;
+                continue;
+            }
+        }
         return compressedString;
     }
 
@@ -52,12 +74,32 @@ public class Main {
     public static String decompressString(String compressedString) {
         String decompressedString = "";
 
-        /*
-        TODO: Your code for part B2 is here...
-        Note: you may change the given code, but you must not change the signature of the method.
-         */
-
-        return compressedString;
+        String temp_str = "";
+        int temp_int = 0;
+        for(int i = 0; i < compressedString.length(); i++)
+        {
+            if(Character.isDigit(compressedString.charAt(i)))
+            {
+                temp_int *= 10;
+                temp_int += Integer.parseInt(String.valueOf(compressedString.charAt(i)));
+                if(i == compressedString.length() - 1)
+                {
+                    for(int j = 0; j < temp_int; j++)
+                    {
+                        decompressedString += temp_str;
+                    }
+                }
+                continue;
+            }
+            for(int j = 0; j < temp_int; j++)
+            {
+                decompressedString += temp_str;
+            }
+            temp_int = 0;
+            temp_str = "";
+            temp_str += compressedString.charAt(i);
+        }
+        return decompressedString;
     }
 
     public static void main(String[] args) throws FileNotFoundException {
