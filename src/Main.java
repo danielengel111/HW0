@@ -74,30 +74,32 @@ public class Main {
     public static String decompressString(String compressedString) {
         String decompressedString = "";
 
+        int length = compressedString.length();
         String temp_str = "";
         int temp_int = 0;
-        for(int i = 0; i < compressedString.length(); i++)
+        boolean is_end_of_sequence = false;
+
+        for(int i = 0; i < length; i++)
         {
-            if(Character.isDigit(compressedString.charAt(i)))
-            {
+            while((Character.isDigit(compressedString.charAt(i)))){
                 temp_int *= 10;
                 temp_int += Integer.parseInt(String.valueOf(compressedString.charAt(i)));
-                if(i == compressedString.length() - 1)
-                {
-                    for(int j = 0; j < temp_int; j++)
-                    {
-                        decompressedString += temp_str;
-                    }
+                if(i == length - 1 || !Character.isDigit(compressedString.charAt(i+1))){
+                    is_end_of_sequence = true;
+                    break;
                 }
-                continue;
+                i++;
             }
-            for(int j = 0; j < temp_int; j++)
-            {
-                decompressedString += temp_str;
+            if(is_end_of_sequence) {
+                while (temp_int > 0) {
+                    decompressedString += temp_str;
+                    temp_int--;
+                }
+                temp_str = "";
+                is_end_of_sequence = false;
+            }else {
+                temp_str += compressedString.charAt(i);
             }
-            temp_int = 0;
-            temp_str = "";
-            temp_str += compressedString.charAt(i);
         }
         return decompressedString;
     }
