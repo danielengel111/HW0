@@ -34,10 +34,12 @@ public class Main {
     /**
      * Compresses a given string.
      *
-     * The compression process is done by replacing a sequence of identical consecutive characters
+     * The compression process is done by replacing
+     * a sequence of identical consecutive characters
      * with that same character followed by the length of sequence.
      *
-     * It is guaranteed that the string contains only letters (lowercase and uppercase).
+     * It is guaranteed that the string contains only letters
+     * (lowercase and uppercase).
      *
      * @param stringToCompress The string to compress
      * @return The compressed version of the string
@@ -49,7 +51,8 @@ public class Main {
         for(int i = 0; i < stringToCompress.length(); i++)
         {
             count += 1;
-            if(i + 1 == stringToCompress.length() || stringToCompress.charAt(i) != stringToCompress.charAt(i + 1))
+            if(i + 1 == stringToCompress.length() || stringToCompress.charAt(i)
+                    != stringToCompress.charAt(i + 1))
             {
                 compressedString += stringToCompress.charAt(i);
                 compressedString += count;
@@ -63,7 +66,8 @@ public class Main {
     /**
      * Decompresses a given string.
      *
-     * The decompression process is done by duplicating each sequence of characters
+     * The decompression process is done by duplicating
+     * each sequence of characters
      * according to the number which appears after the sequence.
      *
      * It is guaranteed that the string is a legal compressed string.
@@ -75,30 +79,40 @@ public class Main {
         String decompressedString = "";
 
         int length = compressedString.length();
-        String temp_str = "";
-        int temp_int = 0;
-        boolean is_end_of_sequence = false;
+        String currentSequence = "";
+        int Repetitions = 0;
+        boolean isEndOfSequence = false; /* the flag will be true when we
+        are trying to get how many repetitions the current sequence has
+        but the next char is not a number, or if we are at the last char
+        */
 
-        for(int i = 0; i < length; i++)
+        for(int i = 0; i < length; i++) //for every letter
         {
             while((Character.isDigit(compressedString.charAt(i)))){
-                temp_int *= 10;
-                temp_int += Integer.parseInt(String.valueOf(compressedString.charAt(i)));
-                if(i == length - 1 || !Character.isDigit(compressedString.charAt(i+1))){
-                    is_end_of_sequence = true;
+                //we are expecting only digits for now
+                Repetitions *= 10;
+                Repetitions += Integer.parseInt(String.valueOf(
+                        compressedString.charAt(i)));
+                if(i == length - 1 || !Character.isDigit(
+                        compressedString.charAt(i+1))){
+                    //if so, flag turns true
+                    isEndOfSequence = true;
                     break;
                 }
                 i++;
             }
-            if(is_end_of_sequence) {
-                while (temp_int > 0) {
-                    decompressedString += temp_str;
-                    temp_int--;
+            if(isEndOfSequence) {//if so, add the current sequence
+                //to the decompressedString
+                while (Repetitions > 0) {
+                    decompressedString += currentSequence;
+                    Repetitions--;
                 }
-                temp_str = "";
-                is_end_of_sequence = false;
+                currentSequence = ""; // initialize the current sequence
+                isEndOfSequence = false;
             }else {
-                temp_str += compressedString.charAt(i);
+                currentSequence += compressedString.charAt(i);
+                // we are not at the end so add the letter to the current
+                // sequence
             }
         }
         return decompressedString;
@@ -122,7 +136,8 @@ public class Main {
         for (int i = 0; i < numberOfStringsToCompress; i++) {
             String stringToCompress = scanner.nextLine();
             String compressedString = compressString(stringToCompress);
-            System.out.println("The compressed version of " + stringToCompress + " is " + compressedString);
+            System.out.println("The compressed version of " +
+                    stringToCompress + " is " + compressedString);
         }
 
         // Tests for part B2
@@ -131,7 +146,8 @@ public class Main {
         for (int i = 0; i < numberOfDecompressedStrings; i++) {
             String compressedString = scanner.nextLine();
             String decompressedString = decompressString(compressedString);
-            System.out.println("The decompressed version of " + compressedString + " is " + decompressedString);
+            System.out.println("The decompressed version of " +
+                    compressedString + " is " + decompressedString);
         }
 
         // Tests for both part B1 and B2
@@ -141,7 +157,9 @@ public class Main {
             String stringToCompress = scanner.nextLine();
             String compressedString = compressString(stringToCompress);
             String decompressedString = decompressString(compressedString);
-            System.out.println("decompress(compress(" + stringToCompress + ")) == " + stringToCompress + "? " + stringToCompress.equals(decompressedString));
+            System.out.println("decompress(compress(" + stringToCompress
+                    + ")) == " + stringToCompress + "? " +
+                    stringToCompress.equals(decompressedString));
         }
     }
 }
