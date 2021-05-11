@@ -45,15 +45,20 @@ public class Main {
      * @return The compressed version of the string
      */
     public static String compressString(String stringToCompress) {
-        String compressedString = "";
+        String compressedString = ""; /*string that will contain the
+        compressed version
+        */
 
         int count = 0;
         for(int i = 0; i < stringToCompress.length(); i++)
         {
-            count += 1;
+            count += 1; //count the number of times a letter appears in a row
             if(i + 1 == stringToCompress.length() || stringToCompress.charAt(i)
                     != stringToCompress.charAt(i + 1))
-            {
+            { /*once we have reached the end of the identical sequence,
+                we update the compressed version of the string, zero the
+                counter, and move on to the next letter.
+                */
                 compressedString += stringToCompress.charAt(i);
                 compressedString += count;
                 count = 0;
